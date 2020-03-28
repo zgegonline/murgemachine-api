@@ -14,7 +14,7 @@ JSON sent via MQTT to activate the pumps format :
       "id" : "3",
       "part" : "33"
     }
-  ]
+  ],
   "led" : {
     "ledeffect" : "blink",
     "colors" : [
