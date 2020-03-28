@@ -5,7 +5,7 @@ Rest API for the Murge Machine project
 JSON sent via MQTT to activate the pumps format : 
 ```json
 {
-  "pumps": [
+  "pumps" : [
     {
       "id" : "1",
       "part" : "67"
@@ -15,15 +15,15 @@ JSON sent via MQTT to activate the pumps format :
       "part" : "33"
     }
   ]
-  "led": {
+  "led" : {
     "ledeffect" : "blink",
-    "colors": [
+    "colors" : [
       {
-        "color" : "#ff0000"
+        "color" : "#ff0000",
         "time" : "0.3"
       },
       {
-        "color" : "#0000ff"
+        "color" : "#0000ff",
         "time" : "0.7"
       }
     ]
