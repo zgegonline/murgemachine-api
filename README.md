@@ -1,7 +1,7 @@
 # MurgeMachine-RestAPI
 Rest API for the Murge Machine project
 
-
+## JSON files format
 JSON sent via MQTT to activate the pumps format : 
 ```json
 {
