@@ -3,6 +3,7 @@ Rest API for the Murge Machine project
 
 
 JSON sent via MQTT to activate the pumps format : 
+```json
 {
   "pumps" : [
     {
@@ -28,3 +29,4 @@ JSON sent via MQTT to activate the pumps format :
     ]
   }
 }
+```
