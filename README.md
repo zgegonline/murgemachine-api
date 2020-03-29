@@ -17,20 +17,11 @@ size -> 1 for 25 cl, 2 for 50cl
     {
       "id" : "3",
       "part" : "33"
-    }
-  ],
-  "led" : {
-    "ledeffect" : "blink",
-    "colors" : [
-      {
-        "color" : "#ff0000",
-        "time" : "0.3"
-      },
-      {
-        "color" : "#0000ff",
-        "time" : "0.7"
       }
-    ]
+  ],
+  "light" : {
+    "color" : "#ff0000",
+    "effect" : "fixed"
   }
 }
 ```
