@@ -86,7 +86,7 @@ config.json :
     {
       "name" : "Vodka Schweppes",
       "color" : "#ffc042",
-      "drinks" : [
+      "ingredients" : [
         {
           "id" : "vodka",
           "part" : "33"
@@ -100,7 +100,7 @@ config.json :
     {
       "name" : "Vodka RedBull",
       "color" : "#2730d9",
-      "drinks" : [
+      "ingredients" : [
         {
           "id" : "vodka",
           "part" : "33"
@@ -114,7 +114,7 @@ config.json :
     {
       "name" : "Jaeger Bomb",
       "color" : "#2730d9",
-      "drinks" : [
+      "ingredients" : [
         {
           "id" : "jager",
           "part" : "33"
@@ -129,15 +129,15 @@ config.json :
   "pumps" : [
     {
       "number" : "1",
-      "drink" : "jager"
+      "content" : "jager"
     },
     {
       "number" : "2",
-      "drink" : "vodka"
+      "content" : "vodka"
     },
     {
       "number" : "3",
-      "drink" : "redbull" 
+      "content" : "redbull" 
     }
   ]
 }
