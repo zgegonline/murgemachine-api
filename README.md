@@ -82,6 +82,7 @@ config.json :
   ],
   "cocktails" : [
     {
+      "id":0,
       "name" : "Vodka Schweppes",
       "color" : "#ffc042",
       "ingredients" : [
@@ -96,6 +97,7 @@ config.json :
       ]
     },
     {
+      "id":1,
       "name" : "Vodka RedBull",
       "color" : "#2730d9",
       "ingredients" : [
@@ -110,6 +112,7 @@ config.json :
       ]
     },
     {
+      "id":2,
       "name" : "Jaeger Bomb",
       "color" : "#2730d9",
       "ingredients" : [
