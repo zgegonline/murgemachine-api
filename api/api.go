@@ -53,6 +53,7 @@ func handleRequests() error {
 	router.HandleFunc("/drinks", getDrinks).Methods("GET")
 	router.HandleFunc("/drink", createDrink).Methods("POST")
 	router.HandleFunc("/cocktails", getCocktails).Methods("GET")
+	router.HandleFunc("/cocktail", createCocktail).Methods("POST")
 	router.HandleFunc("/pumps", getPumps).Methods("GET")
 
 	fmt.Println("Starting router...")
@@ -79,16 +80,30 @@ func createDrink(w http.ResponseWriter, r *http.Request) {
 	var newDrink model.Drink
 	reqBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		fmt.Println(err)
 		fmt.Fprintf(w, "Error creating a drink")
 	}
 
 	json.Unmarshal(reqBody, &newDrink)
-	fmt.Println(newDrink)
 
 	Drinks.Drinks = append(Drinks.Drinks, newDrink)
 
 	w.WriteHeader(http.StatusCreated)
 
 	json.NewEncoder(w).Encode(newDrink)
+}
+
+func createCocktail(w http.ResponseWriter, r *http.Request) {
+	var newCocktail model.Cocktail
+	reqBody, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Fprintf(w, "Error creating a cocktail")
+	}
+
+	json.Unmarshal(reqBody, &newCocktail)
+
+	Cocktails.Cocktails = append(Cocktails.Cocktails, newCocktail)
+
+	w.WriteHeader(http.StatusCreated)
+
+	json.NewEncoder(w).Encode(newCocktail)
 }

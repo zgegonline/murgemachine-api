@@ -87,11 +87,11 @@ config.json :
       "ingredients" : [
         {
           "id" : "vodka",
-          "part" : "33"
+          "part" : 33
         },
         {
           "id" : "agrum",
-          "part" : "67"
+          "part" : 67
         }
       ]
     },
@@ -101,11 +101,11 @@ config.json :
       "ingredients" : [
         {
           "id" : "vodka",
-          "part" : "33"
+          "part" : 33
         },
         {
           "id" : "redbull",
-          "part" : "67"
+          "part" : 67
         }
       ]
     },
@@ -115,11 +115,11 @@ config.json :
       "ingredients" : [
         {
           "id" : "jager",
-          "part" : "33"
+          "part" : 33
         },
         {
           "id" : "redbull",
-          "part" : "67"
+          "part" : 67
         }
       ]
     }
