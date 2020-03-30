@@ -54,7 +54,7 @@ func handleRequests() error {
 	router.HandleFunc("/cocktails", getCocktails).Methods("GET")
 
 	fmt.Println("Starting router...")
-	return http.ListenAndServe(":8080", router)
+	return http.ListenAndServe(":2636", router)
 }
 
 func homeLink(w http.ResponseWriter, r *http.Request) {
