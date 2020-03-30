@@ -3,6 +3,10 @@ Rest API for the Murge Machine project
 
 https://docs.google.com/drawings/d/1gY9Sr3afUbbaoN3JzfTktn9-hpBiD_OB6CGR5jjYZoM/edit?usp=sharing
 
+## Endpoints
+
+/drinks    -> get drinks
+/cocktails -> get cocktails
 
 ### JSON sent via MQTT to activate the pumps format : 
 
