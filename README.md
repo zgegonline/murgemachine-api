@@ -1,5 +1,5 @@
-# MurgeMachine-RestAPI
-Rest API for the Murge Machine project
+# MurgeMachine-API
+API for the Murge Machine project
 
 https://docs.google.com/drawings/d/1gY9Sr3afUbbaoN3JzfTktn9-hpBiD_OB6CGR5jjYZoM/edit?usp=sharing
 
