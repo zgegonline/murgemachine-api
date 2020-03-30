@@ -5,9 +5,9 @@ https://docs.google.com/drawings/d/1gY9Sr3afUbbaoN3JzfTktn9-hpBiD_OB6CGR5jjYZoM/
 
 ## Endpoints
 
-/drinks    -> get drinks
-
-/cocktails -> get cocktails
+/drinks    -> get drinks  
+/cocktails -> get cocktails  
+/pumps -> get pumps
 
 ### JSON sent via MQTT to activate the pumps format : 
 

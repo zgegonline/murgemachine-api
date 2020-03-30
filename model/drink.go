@@ -5,14 +5,7 @@ type Drinks struct {
 }
 
 type Drink struct {
-	Id   string    `json:"id"`
-	Name string    `json:"name"`
-	Type DrinkType `json:"type"`
+	Id   string `json:"id"`
+	Name string `json:"name"`
+	Type string `json:"type"`
 }
-
-type DrinkType int
-
-const (
-	Alcohol DrinkType = 0
-	Soft    DrinkType = 1
-)

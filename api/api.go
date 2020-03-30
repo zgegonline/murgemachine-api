@@ -51,6 +51,7 @@ func handleRequests() error {
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", homeLink)
 	router.HandleFunc("/drinks", getDrinks).Methods("GET")
+	router.HandleFunc("/drink", createDrink).Methods("POST")
 	router.HandleFunc("/cocktails", getCocktails).Methods("GET")
 	router.HandleFunc("/pumps", getPumps).Methods("GET")
 
@@ -72,4 +73,22 @@ func getCocktails(w http.ResponseWriter, r *http.Request) {
 
 func getPumps(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(Pumps)
+}
+
+func createDrink(w http.ResponseWriter, r *http.Request) {
+	var newDrink model.Drink
+	reqBody, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Println(err)
+		fmt.Fprintf(w, "Error creating a drink")
+	}
+
+	json.Unmarshal(reqBody, &newDrink)
+	fmt.Println(newDrink)
+
+	Drinks.Drinks = append(Drinks.Drinks, newDrink)
+
+	w.WriteHeader(http.StatusCreated)
+
+	json.NewEncoder(w).Encode(newDrink)
 }
