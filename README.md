@@ -9,6 +9,7 @@ https://docs.google.com/drawings/d/1gY9Sr3afUbbaoN3JzfTktn9-hpBiD_OB6CGR5jjYZoM/
 /cocktails -> get cocktails  
 /pumps -> get pumps
 
+## JSON TEMPLATES
 ### JSON sent via MQTT to activate the pumps format : 
 
 size -> 1 for 25 cl, 2 for 50cl
@@ -26,8 +27,21 @@ size -> 1 for 25 cl, 2 for 50cl
         "number" : 3,
         "part" : 33
       }
-    ],
+    ]
   },  
+  "light" : {
+    "color" : "#ff0000",
+    "effect" : "fixed"
+  }
+}
+```
+
+### JSON sent to API to request a mqtt publish
+
+```json
+{
+  "cocktailId":0,
+  "size":1,
   "light" : {
     "color" : "#ff0000",
     "effect" : "fixed"
