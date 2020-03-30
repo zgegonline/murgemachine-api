@@ -18,15 +18,8 @@ var Cocktails model.Cocktails
 var Pumps model.Pumps
 
 func Start() error {
-
-	router := mux.NewRouter()
-	router.HandleFunc("/", homeLink)
-	router.HandleFunc("/drinks", getDrinks).Methods("GET")
 	setup()
-	// handleRequests(router)
-
-	fmt.Println("Starting router...")
-	return http.ListenAndServe(":8080", router)
+	return handleRequests()
 }
 
 func setup() {
@@ -54,8 +47,14 @@ func loadConfig() {
 	fmt.Println("Number of pumps loaded : " + strconv.Itoa(len(Pumps.Pumps)))
 }
 
-func handleRequests(router mux.Router) {
+func handleRequests() error {
+	router := mux.NewRouter().StrictSlash(true)
+	router.HandleFunc("/", homeLink)
+	router.HandleFunc("/drinks", getDrinks).Methods("GET")
+	router.HandleFunc("/cocktails", getCocktails).Methods("GET")
 
+	fmt.Println("Starting router...")
+	return http.ListenAndServe(":8080", router)
 }
 
 func homeLink(w http.ResponseWriter, r *http.Request) {
@@ -64,4 +63,8 @@ func homeLink(w http.ResponseWriter, r *http.Request) {
 
 func getDrinks(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(Drinks)
+}
+
+func getCocktails(w http.ResponseWriter, r *http.Request) {
+	json.NewEncoder(w).Encode(Cocktails)
 }
