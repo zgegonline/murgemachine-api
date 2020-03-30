@@ -52,6 +52,7 @@ func handleRequests() error {
 	router.HandleFunc("/", homeLink)
 	router.HandleFunc("/drinks", getDrinks).Methods("GET")
 	router.HandleFunc("/cocktails", getCocktails).Methods("GET")
+	router.HandleFunc("/pumps", getPumps).Methods("GET")
 
 	fmt.Println("Starting router...")
 	return http.ListenAndServe(":2636", router)
@@ -67,4 +68,8 @@ func getDrinks(w http.ResponseWriter, r *http.Request) {
 
 func getCocktails(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(Cocktails)
+}
+
+func getPumps(w http.ResponseWriter, r *http.Request) {
+	json.NewEncoder(w).Encode(Pumps)
 }

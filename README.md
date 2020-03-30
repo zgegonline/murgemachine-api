@@ -126,15 +126,15 @@ config.json :
   ],
   "pumps" : [
     {
-      "number" : "1",
+      "number" : 1,
       "content" : "jager"
     },
     {
-      "number" : "2",
+      "number" : 2,
       "content" : "vodka"
     },
     {
-      "number" : "3",
+      "number" : 3,
       "content" : "redbull" 
     }
   ]

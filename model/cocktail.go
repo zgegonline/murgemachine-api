@@ -5,12 +5,8 @@ type Cocktails struct {
 }
 
 type Cocktail struct {
-	Name        string      `json:"name"`
-	Color       string      `json:"color"`
-	Ingredients Ingredients `json:"ingredients"`
-}
-
-type Ingredients struct {
+	Name        string       `json:"name"`
+	Color       string       `json:"color"`
 	Ingredients []Ingredient `json:"ingredients"`
 }
 
