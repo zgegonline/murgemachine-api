@@ -17,7 +17,7 @@ size -> 1 for 25 cl, 2 for 50cl
 {
   "preparation" : {
     "size" : 1,
-    "pumps" : [
+    "pumpsActivation" : [
       {
         "number" : 1,
         "part" : "67"
