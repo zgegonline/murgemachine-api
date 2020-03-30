@@ -20,11 +20,11 @@ size -> 1 for 25 cl, 2 for 50cl
     "pumpsActivation" : [
       {
         "number" : 1,
-        "part" : "67"
+        "part" : 67
       },
       {
         "number" : 3,
-        "part" : "33"
+        "part" : 33
       }
     ],
   },  
