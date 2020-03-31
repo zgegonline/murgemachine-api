@@ -1,14 +1,9 @@
 package main
 
 import (
-	"fmt"
-	"log"
-
-	"github.com/zgegonline/murgemachine-restapi/api"
+	"github.com/zgegonline/murgemachine-api/app"
 )
 
 func main() {
-	fmt.Println("Hello World !")
-
-	log.Fatal(api.Start())
+	app.Start()
 }
