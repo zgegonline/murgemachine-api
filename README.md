@@ -5,9 +5,11 @@ https://docs.google.com/drawings/d/1gY9Sr3afUbbaoN3JzfTktn9-hpBiD_OB6CGR5jjYZoM/
 
 ## Endpoints
 
-/drinks    -> get drinks  
-/cocktails -> get cocktails  
-/pumps -> get pumps
+/drinks              -> get drinks  
+/cocktails           -> get cocktails  
+/available-cocktails -> get available cocktails  
+/pumps               -> get pumps  
+/request-cocktail    -> send mqtt message to Hardware
 
 ## JSON TEMPLATES
 ### JSON sent via MQTT to activate the pumps format : 
@@ -37,7 +39,7 @@ size -> 1 for 25 cl, 2 for 50cl
 ```
 
 ### JSON sent to API to request a mqtt publish
-
+JSON sent to /request-cocktail  
 ```json
 {
   "cocktailId":0,

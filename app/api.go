@@ -38,7 +38,7 @@ func handleRequests() error {
 	router.HandleFunc("/available-cocktails", getAvailableCocktails).Methods("GET")
 	router.HandleFunc("/cocktail", createCocktail).Methods("POST")
 	router.HandleFunc("/pumps", getPumps).Methods("GET")
-	router.HandleFunc("/requestcocktail", requestCocktail).Methods("POST")
+	router.HandleFunc("/request-cocktail", requestCocktail).Methods("POST")
 
 	fmt.Println("Starting router...")
 	return http.ListenAndServe(":2636", router)
