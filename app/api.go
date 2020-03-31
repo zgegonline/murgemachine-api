@@ -2,7 +2,6 @@ package app
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -36,6 +35,7 @@ func handleRequests() error {
 	router.HandleFunc("/drinks", getDrinks).Methods("GET")
 	router.HandleFunc("/drink", createDrink).Methods("POST")
 	router.HandleFunc("/cocktails", getCocktails).Methods("GET")
+	router.HandleFunc("/available-cocktails", getAvailableCocktails).Methods("GET")
 	router.HandleFunc("/cocktail", createCocktail).Methods("POST")
 	router.HandleFunc("/pumps", getPumps).Methods("GET")
 	router.HandleFunc("/mqttmessage", sendMqttMessage).Methods("POST")
@@ -53,6 +53,10 @@ func getDrinks(w http.ResponseWriter, r *http.Request) {
 }
 
 func getCocktails(w http.ResponseWriter, r *http.Request) {
+	json.NewEncoder(w).Encode(Cocktails)
+}
+
+func getAvailableCocktails(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(Cocktails)
 }
 
@@ -103,8 +107,10 @@ func sendMqttMessage(w http.ResponseWriter, r *http.Request) {
 
 	json.Unmarshal(reqBody, &request)
 
+	cocktail, _ := Cocktails.GetCocktail(request.CocktailId)
+
 	newMqttMessage.Preparation.Size = request.Size
-	newMqttMessage.Preparation.PumpsActivation = getPumpsToActivate(request.CocktailId)
+	newMqttMessage.Preparation.PumpsActivation = model.GetPumpsToActivate(cocktail, Pumps.Pumps)
 	newMqttMessage.Light = getLight(request.CocktailId, request.Light)
 
 	w.WriteHeader(http.StatusAccepted)
@@ -117,43 +123,12 @@ func sendMqttMessage(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(newMqttMessage)
 }
 
-func getPumpsToActivate(cocktailId int) []model.PumpActivation {
-	cocktail, _ := getCocktail(cocktailId)
-	var pumpsToActivate []model.PumpActivation
-
-	for i := 0; i < len(cocktail.Ingredients); i++ {
-		ingredient := cocktail.Ingredients[i]
-
-		inPumps := false
-		for j := 0; j < len(Pumps.Pumps); j++ {
-			if Pumps.Pumps[j].Content == ingredient.Id {
-				inPumps = true
-				pumpsToActivate = append(pumpsToActivate, model.PumpActivation{Number: Pumps.Pumps[j].Number, Part: ingredient.Part})
-			}
-		}
-		if !inPumps {
-			log.Fatal("Can't find drink in pumps")
-		}
-	}
-
-	return pumpsToActivate
-}
-
-func getCocktail(cocktailId int) (model.Cocktail, error) {
-	for i := 0; i < len(Cocktails.Cocktails); i++ {
-		if cocktailId == Cocktails.Cocktails[i].Id {
-			return Cocktails.Cocktails[i], nil
-		}
-	}
-	return model.Cocktail{}, errors.New("Can't find cocktail")
-}
-
-// return request.Light if it not empty, otherwise return Light {color : Cocktail.Color, effect : "fixed"}
+// return light param if it not empty, otherwise return Light {color : Cocktail.Color, effect : "fixed"}
 func getLight(cocktailId int, light model.Light) model.Light {
 	if light.Color != "" {
 		return light
 	} else {
-		c, _ := getCocktail(cocktailId)
+		c, _ := Cocktails.GetCocktail(cocktailId)
 		return model.Light{Color: c.Color, Effect: "fixed"}
 	}
 }

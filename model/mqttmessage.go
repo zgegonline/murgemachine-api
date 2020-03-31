@@ -5,6 +5,8 @@ type MqttMessage struct {
 	Light       Light       `json:"light"`
 }
 
+// func (msg MqttMessage) Generate()
+
 type Preparation struct {
 	Size            int              `json:"size"`
 	PumpsActivation []PumpActivation `json:"pumpsActivation"`
