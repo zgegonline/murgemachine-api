@@ -38,7 +38,7 @@ func handleRequests() error {
 	router.HandleFunc("/available-cocktails", getAvailableCocktails).Methods("GET")
 	router.HandleFunc("/cocktail", createCocktail).Methods("POST")
 	router.HandleFunc("/pumps", getPumps).Methods("GET")
-	router.HandleFunc("/mqttmessage", sendMqttMessage).Methods("POST")
+	router.HandleFunc("/requestcocktail", requestCocktail).Methods("POST")
 
 	fmt.Println("Starting router...")
 	return http.ListenAndServe(":2636", router)
@@ -96,7 +96,7 @@ func createCocktail(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(newCocktail)
 }
 
-func sendMqttMessage(w http.ResponseWriter, r *http.Request) {
+func requestCocktail(w http.ResponseWriter, r *http.Request) {
 	var newMqttMessage model.MqttMessage
 	var request model.Request
 
@@ -107,11 +107,7 @@ func sendMqttMessage(w http.ResponseWriter, r *http.Request) {
 
 	json.Unmarshal(reqBody, &request)
 
-	cocktail, _ := Cocktails.GetCocktail(request.CocktailId)
-
-	newMqttMessage.Preparation.Size = request.Size
-	newMqttMessage.Preparation.PumpsActivation = model.GetPumpsToActivate(cocktail, Pumps.Pumps)
-	newMqttMessage.Light = getLight(request.CocktailId, request.Light)
+	newMqttMessage.Generate(request, Cocktails, Pumps.Pumps)
 
 	w.WriteHeader(http.StatusAccepted)
 

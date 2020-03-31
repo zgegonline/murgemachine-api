@@ -1,11 +1,32 @@
 package model
 
+import "fmt"
+
 type MqttMessage struct {
 	Preparation Preparation `json:"preparation"`
 	Light       Light       `json:"light"`
 }
 
-// func (msg MqttMessage) Generate()
+func (msg *MqttMessage) Generate(req Request, cocktails Cocktails, pumps []Pump) error {
+
+	fmt.Println(req.Size)
+	msg.Preparation.Size = req.Size
+	cocktail, err := cocktails.GetCocktail(req.CocktailId)
+	if err != nil {
+		return err
+	}
+	msg.Preparation.PumpsActivation = GetPumpsToActivate(cocktail, pumps)
+	if req.Light.Color != "" {
+		msg.Light = req.Light
+		if msg.Light.Effect == "" {
+			msg.Light.Effect = "fixed"
+		}
+	} else {
+		msg.Light.Color = cocktail.Color
+		msg.Light.Effect = "fixed"
+	}
+	return nil
+}
 
 type Preparation struct {
 	Size            int              `json:"size"`
