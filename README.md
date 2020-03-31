@@ -14,12 +14,12 @@ https://docs.google.com/drawings/d/1gY9Sr3afUbbaoN3JzfTktn9-hpBiD_OB6CGR5jjYZoM/
 ## JSON TEMPLATES
 ### JSON sent via MQTT to activate the pumps format : 
 
-size -> 1 for 25 cl, 2 for 50cl
+size is in cl
 
 ```json
 {
   "preparation" : {
-    "size" : 1,
+    "size" : 25,
     "pumpsActivation" : [
       {
         "number" : 1,
@@ -43,7 +43,7 @@ JSON sent to /request-cocktail
 ```json
 {
   "cocktailId":0,
-  "size":1,
+  "size":25,
   "light" : {
     "color" : "#ff0000",
     "effect" : "fixed"
