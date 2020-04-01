@@ -7,7 +7,7 @@ type MqttMessage struct {
 	Light       Light       `json:"light"`
 }
 
-func (msg *MqttMessage) Generate(req Request, cocktails Cocktails, pumps []Pump) error {
+func (msg *MqttMessage) Generate(req Request, cocktails Cocktails, pumps Pumps) error {
 
 	fmt.Println(req.Size)
 	msg.Preparation.Size = req.Size
@@ -15,7 +15,10 @@ func (msg *MqttMessage) Generate(req Request, cocktails Cocktails, pumps []Pump)
 	if err != nil {
 		return err
 	}
-	msg.Preparation.PumpsActivation = GetPumpsToActivate(cocktail, pumps)
+	msg.Preparation.PumpsActivation, err = pumps.GetPumpsToActivate(cocktail)
+	if err != nil {
+		return err
+	}
 	if req.Light.Color != "" {
 		msg.Light = req.Light
 		if msg.Light.Effect == "" {

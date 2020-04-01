@@ -13,9 +13,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-var Drinks model.Drinks
-var Cocktails model.Cocktails
-var Pumps model.Pumps
+var CurrentConfig Config
 var MqttClient mqtt.Client
 
 func Start() {
@@ -49,19 +47,19 @@ func homeLink(w http.ResponseWriter, r *http.Request) {
 }
 
 func getDrinks(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode(Drinks)
+	json.NewEncoder(w).Encode(CurrentConfig.getDrinks())
 }
 
 func getCocktails(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode(Cocktails)
+	json.NewEncoder(w).Encode(CurrentConfig.getCocktails())
 }
 
 func getAvailableCocktails(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode(Cocktails)
+	json.NewEncoder(w).Encode(CurrentConfig.getAvailableCocktails())
 }
 
 func getPumps(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode(Pumps)
+	json.NewEncoder(w).Encode(CurrentConfig.getPumps())
 }
 
 func createDrink(w http.ResponseWriter, r *http.Request) {
@@ -73,7 +71,7 @@ func createDrink(w http.ResponseWriter, r *http.Request) {
 
 	json.Unmarshal(reqBody, &newDrink)
 
-	Drinks.Drinks = append(Drinks.Drinks, newDrink)
+	CurrentConfig.drinks.Drinks = append(CurrentConfig.getDrinkList(), newDrink)
 
 	w.WriteHeader(http.StatusCreated)
 
@@ -89,7 +87,15 @@ func createCocktail(w http.ResponseWriter, r *http.Request) {
 
 	json.Unmarshal(reqBody, &newCocktail)
 
-	Cocktails.Cocktails = append(Cocktails.Cocktails, newCocktail)
+	newCocktail.Id = CurrentConfig.getCocktails().CheckAndGenerateId(newCocktail.Id)
+
+	err = CurrentConfig.addCocktail(newCocktail)
+
+	if err != nil {
+		w.WriteHeader(http.StatusForbidden)
+		w.Write([]byte(err.Error()))
+		return
+	}
 
 	w.WriteHeader(http.StatusCreated)
 
@@ -103,13 +109,19 @@ func requestCocktail(w http.ResponseWriter, r *http.Request) {
 	reqBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		fmt.Fprintf(w, "Error sendMqttMessage")
+		w.WriteHeader(http.StatusBadRequest)
+		return
 	}
 
 	json.Unmarshal(reqBody, &request)
+	err = newMqttMessage.Generate(request, CurrentConfig.getCocktails(), CurrentConfig.getPumps())
+	if err != nil {
+		w.WriteHeader(http.StatusForbidden)
+		w.Write([]byte(err.Error()))
+		return
+	}
 
-	newMqttMessage.Generate(request, Cocktails, Pumps.Pumps)
-
-	w.WriteHeader(http.StatusAccepted)
+	w.WriteHeader(http.StatusOK)
 
 	jsonData, _ := json.Marshal(newMqttMessage)
 	MqttClient := connectMQTT("192.168.1.100:1883", "murgemachine-api")
@@ -124,7 +136,7 @@ func getLight(cocktailId int, light model.Light) model.Light {
 	if light.Color != "" {
 		return light
 	} else {
-		c, _ := Cocktails.GetCocktail(cocktailId)
+		c, _ := CurrentConfig.getCocktails().GetCocktail(cocktailId)
 		return model.Light{Color: c.Color, Effect: "fixed"}
 	}
 }
