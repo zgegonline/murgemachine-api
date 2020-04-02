@@ -23,8 +23,6 @@ func Start() {
 
 func setup() {
 	loadConfig()
-	MqttClient := connectMQTT("192.168.1.100:1883", "murgemachine-api")
-	MqttClient.Publish("test", 0, false, "SALUT")
 }
 
 func handleRequests() error {
@@ -37,6 +35,7 @@ func handleRequests() error {
 	router.HandleFunc("/cocktail", createCocktail).Methods("POST")
 	router.HandleFunc("/pumps", getPumps).Methods("GET")
 	router.HandleFunc("/request-cocktail", requestCocktail).Methods("POST")
+	router.HandleFunc("/change-default-light", changeDefaultLight).Methods("POST")
 
 	fmt.Println("Starting router...")
 	return http.ListenAndServe(":2636", router)
@@ -71,7 +70,7 @@ func createDrink(w http.ResponseWriter, r *http.Request) {
 
 	json.Unmarshal(reqBody, &newDrink)
 
-	CurrentConfig.drinks.Drinks = append(CurrentConfig.getDrinkList(), newDrink)
+	CurrentConfig.Drinks.Drinks = append(CurrentConfig.getDrinkList(), newDrink)
 
 	w.WriteHeader(http.StatusCreated)
 
@@ -124,9 +123,8 @@ func requestCocktail(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 
 	jsonData, _ := json.Marshal(newMqttMessage)
-	MqttClient := connectMQTT("192.168.1.100:1883", "murgemachine-api")
-	MqttClient.Publish("murgemachine", 0, false, string(jsonData))
-	MqttClient.Disconnect(1000)
+	MqttClient := connectMQTT()
+	MqttClient.Publish(MQTT_TOPIC_PREPARATION, 2, false, string(jsonData))
 
 	json.NewEncoder(w).Encode(newMqttMessage)
 }
@@ -139,4 +137,25 @@ func getLight(cocktailId int, light model.Light) model.Light {
 		c, _ := CurrentConfig.getCocktails().GetCocktail(cocktailId)
 		return model.Light{Color: c.Color, Effect: "fixed"}
 	}
+}
+
+func changeDefaultLight(w http.ResponseWriter, r *http.Request) {
+	var newDefaultLight model.Light
+
+	reqBody, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Fprintf(w, "Error sendMqttMessage")
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	json.Unmarshal(reqBody, &newDefaultLight)
+
+	w.WriteHeader(http.StatusOK)
+
+	jsonData, _ := json.Marshal(newDefaultLight)
+	MqttClient := connectMQTT()
+	MqttClient.Publish(MQTT_TOPIC_LIGHT, 2, false, string(jsonData))
+
+	json.NewEncoder(w).Encode(newDefaultLight)
 }

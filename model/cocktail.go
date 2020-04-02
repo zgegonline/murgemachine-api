@@ -30,10 +30,35 @@ func (c Cocktails) GetAvailableCocktails(pumps []Pump) Cocktails {
 	return Cocktails{availableCocktails}
 }
 
+func (c Cocktails) getHighestId() int {
+	max := 0
+	for _, cocktail := range c.Cocktails {
+		if cocktail.Id > max {
+			max = cocktail.Id
+		}
+	}
+	return max
+}
+
 func (c Cocktails) CheckAndGenerateId(cocktailId int) int {
-	firstAvailableId := 99999
+	idTaken := false
 	i := 0
 	for ; i < len(c.Cocktails); i++ {
+		if c.Cocktails[i].Id == cocktailId {
+			idTaken = true
+		}
+	}
+	if idTaken {
+		return c.Cocktails[i-1].Id + 1
+	} else {
+		return cocktailId
+	}
+}
+
+func (c Cocktails) CheckAndGenerateId2(cocktailId int) int {
+	firstAvailableId := 99999
+	i := 0
+	for ; i < c.getHighestId(); i++ {
 		if i != c.Cocktails[i].Id { // id is available
 			if i == cocktailId { // id wanted by user is available
 				return cocktailId
@@ -48,7 +73,34 @@ func (c Cocktails) CheckAndGenerateId(cocktailId int) int {
 	} else if firstAvailableId != 99999 {
 		return firstAvailableId
 	} else {
+		return i + 1
+	}
+}
+
+func (c Cocktails) CheckAndGenerateId3(cocktailId int) int {
+	cocktailIdIsTaken := false
+	firstAvailableId := -1
+	i := 0
+	for _, cocktail := range c.Cocktails {
+		fmt.Println("i" + strconv.Itoa(i) + "; cocktail.Id" + strconv.Itoa(cocktail.Id))
+		if cocktail.Id == cocktailId { //id wanted by user is taken
+			cocktailIdIsTaken = true
+		} else if !cocktailIdIsTaken && cocktail.Id > cocktailId { //id wanted by user is available
+			return cocktailId
+		} else if i != cocktail.Id { // i is available for id
+			if firstAvailableId == -1 { // the first available id has not been found yet
+				firstAvailableId = i
+			}
+			i = cocktail.Id
+		}
+		i++
+	}
+	if !cocktailIdIsTaken {
+		return cocktailId
+	} else if firstAvailableId == -1 {
 		return i
+	} else {
+		return firstAvailableId
 	}
 }
 

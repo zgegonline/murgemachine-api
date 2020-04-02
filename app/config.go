@@ -12,31 +12,31 @@ import (
 )
 
 type Config struct {
-	defaultLight model.Light     `json:"light"`
-	drinks       model.Drinks    `json:"drinks"`
-	cocktails    model.Cocktails `json:"cocktails"`
-	pumps        model.Pumps     `json:"pumps"`
+	DefaultLight model.Light     `json:"light"`
+	Drinks       model.Drinks    `json:"drinks"`
+	Cocktails    model.Cocktails `json:"cocktails"`
+	Pumps        model.Pumps     `json:"pumps"`
 }
 
 func (c Config) getDefaultLight() model.Light {
-	return c.defaultLight
+	return c.DefaultLight
 }
 
 func (c Config) getDrinks() model.Drinks {
-	return c.drinks
+	return c.Drinks
 }
 func (c Config) getDrinkList() []model.Drink {
-	return c.drinks.Drinks
+	return c.Drinks.Drinks
 }
 
 func (c Config) getCocktails() model.Cocktails {
-	return c.cocktails
+	return c.Cocktails
 }
 func (c Config) getCocktailList() []model.Cocktail {
-	return c.cocktails.Cocktails
+	return c.Cocktails.Cocktails
 }
 func (c Config) getAvailableCocktails() model.Cocktails {
-	return c.cocktails.GetAvailableCocktails(c.getPumpList())
+	return c.Cocktails.GetAvailableCocktails(c.getPumpList())
 }
 func (c *Config) addCocktail(cocktail model.Cocktail) error {
 	if len(cocktail.Ingredients) == 0 {
@@ -55,17 +55,15 @@ func (c *Config) addCocktail(cocktail model.Cocktail) error {
 		}
 	}
 	fmt.Println("cocktail " + cocktail.Name + " added")
-	fmt.Println(strconv.Itoa(len(c.getCocktailList())))
-	c.cocktails.Cocktails = append(c.getCocktailList(), cocktail)
-	fmt.Println(strconv.Itoa(len(c.getCocktailList())))
+	c.Cocktails.Cocktails = append(c.getCocktailList(), cocktail)
 	return nil
 }
 
 func (c Config) getPumps() model.Pumps {
-	return c.pumps
+	return c.Pumps
 }
 func (c Config) getPumpList() []model.Pump {
-	return c.pumps.Pumps
+	return c.Pumps.Pumps
 }
 
 func loadConfig() {
@@ -76,9 +74,9 @@ func loadConfig() {
 
 	byteValue, _ := ioutil.ReadAll(jsonFile)
 
-	json.Unmarshal(byteValue, &CurrentConfig.drinks)
-	json.Unmarshal(byteValue, &CurrentConfig.cocktails)
-	json.Unmarshal(byteValue, &CurrentConfig.pumps)
+	json.Unmarshal(byteValue, &CurrentConfig.Drinks)
+	json.Unmarshal(byteValue, &CurrentConfig.Cocktails)
+	json.Unmarshal(byteValue, &CurrentConfig.Pumps)
 
 	jsonFile.Close()
 

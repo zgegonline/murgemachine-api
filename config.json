@@ -83,11 +83,7 @@
       "ingredients" : [
         {
           "id" : "jager",
-          "part" : 33
-        },
-        {
-          "id" : "redbull",
-          "part" : 67
+          "part" : 60
         }
       ]
     }
