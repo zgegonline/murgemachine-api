@@ -28,6 +28,17 @@ func (c Config) getDrinks() model.Drinks {
 func (c Config) getDrinkList() []model.Drink {
 	return c.Drinks.Drinks
 }
+func (c *Config) addDrink(drink model.Drink) error {
+	for _, iterDrink := range c.getDrinkList() {
+		if iterDrink.Id == drink.Id {
+			return errors.New("Drink with id : " + drink.Id + " already exist in the configuration")
+		}
+		if iterDrink.Name == drink.Name {
+			return errors.New("Drink with name : " + drink.Name + " already exist in the configuration")
+		}
+	}
+	return nil
+}
 
 func (c Config) getCocktails() model.Cocktails {
 	return c.Cocktails
@@ -41,6 +52,9 @@ func (c Config) getAvailableCocktails() model.Cocktails {
 func (c *Config) addCocktail(cocktail model.Cocktail) error {
 	//check name
 	for _, iterCocktail := range c.getCocktailList() {
+		if iterCocktail.Id == cocktail.Id {
+			return errors.New("Cocktail with id : " + strconv.Itoa(cocktail.Id) + " already exist in the configuration")
+		}
 		if iterCocktail.Name == cocktail.Name {
 			return errors.New("Cocktail with name : " + cocktail.Name + " already exist in the configuration")
 		}
