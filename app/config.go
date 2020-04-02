@@ -39,11 +39,21 @@ func (c Config) getAvailableCocktails() model.Cocktails {
 	return c.Cocktails.GetAvailableCocktails(c.getPumpList())
 }
 func (c *Config) addCocktail(cocktail model.Cocktail) error {
+	//check name
+	for _, iterCocktail := range c.getCocktailList() {
+		if iterCocktail.Name == cocktail.Name {
+			return errors.New("Cocktail with name : " + cocktail.Name + " already exist in the configuration")
+		}
+	}
+
+	// check ingredients
 	if len(cocktail.Ingredients) == 0 {
 		return errors.New("Cocktail has no ingredients")
 	}
+	partSum := 0
 	for _, i := range cocktail.Ingredients {
 		ingredientDrink := i.Id
+		partSum += i.Part
 		validCocktail := false
 		for _, d := range c.getDrinkList() {
 			if ingredientDrink == d.Id {
@@ -54,7 +64,11 @@ func (c *Config) addCocktail(cocktail model.Cocktail) error {
 			return errors.New("Drink : " + ingredientDrink + " is not present in the config")
 		}
 	}
-	fmt.Println("cocktail " + cocktail.Name + " added")
+	if partSum != 100 {
+		return errors.New("Sum of the ingredients is not 100 : " + strconv.Itoa(partSum))
+	}
+
+	fmt.Println("Adding cocktail " + cocktail.Name + "...")
 	c.Cocktails.Cocktails = append(c.getCocktailList(), cocktail)
 	return nil
 }

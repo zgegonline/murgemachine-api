@@ -10,6 +10,18 @@ type Cocktails struct {
 	Cocktails []Cocktail `json:"cocktails"`
 }
 
+type Cocktail struct {
+	Id          int          `json:"id"`
+	Name        string       `json:"name"`
+	Color       string       `json:"color"`
+	Ingredients []Ingredient `json:"ingredients"`
+}
+
+type Ingredient struct {
+	Id   string `json:"id"`
+	Part int    `json:"part"`
+}
+
 func (c Cocktails) GetCocktail(cocktailId int) (Cocktail, error) {
 	for i := 0; i < len(c.Cocktails); i++ {
 		if cocktailId == c.Cocktails[i].Id {
@@ -104,13 +116,6 @@ func (c Cocktails) CheckAndGenerateId3(cocktailId int) int {
 	}
 }
 
-type Cocktail struct {
-	Id          int          `json:"id"`
-	Name        string       `json:"name"`
-	Color       string       `json:"color"`
-	Ingredients []Ingredient `json:"ingredients"`
-}
-
 func (cocktail Cocktail) Available(pumps []Pump) bool {
 	for i := 0; i < len(cocktail.Ingredients); i++ {
 		drinkId := cocktail.Ingredients[i].Id
@@ -126,9 +131,4 @@ func (cocktail Cocktail) Available(pumps []Pump) bool {
 		}
 	}
 	return true
-}
-
-type Ingredient struct {
-	Id   string `json:"id"`
-	Part int    `json:"part"`
 }
