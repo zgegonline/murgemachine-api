@@ -25,8 +25,7 @@ func (msg *MqttMessage) Generate(req Request, cocktails Cocktails, pumps Pumps) 
 			msg.Light.Effect = "fixed"
 		}
 	} else {
-		msg.Light.Color = cocktail.Color
-		msg.Light.Effect = "fixed"
+		msg.Light = cocktail.Light
 	}
 	return nil
 }

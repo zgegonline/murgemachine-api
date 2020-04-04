@@ -129,16 +129,6 @@ func requestCocktail(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(newMqttMessage)
 }
 
-// return light param if it not empty, otherwise return Light {color : Cocktail.Color, effect : "fixed"}
-func getLight(cocktailId int, light model.Light) model.Light {
-	if light.Color != "" {
-		return light
-	} else {
-		c, _ := CurrentConfig.getCocktails().GetCocktail(cocktailId)
-		return model.Light{Color: c.Color, Effect: "fixed"}
-	}
-}
-
 func changeDefaultLight(w http.ResponseWriter, r *http.Request) {
 	var newDefaultLight model.Light
 

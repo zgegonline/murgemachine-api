@@ -13,7 +13,7 @@ type Cocktails struct {
 type Cocktail struct {
 	Id          int          `json:"id"`
 	Name        string       `json:"name"`
-	Color       string       `json:"color"`
+	Light       Light        `json:"light"`
 	Ingredients []Ingredient `json:"ingredients"`
 }
 
